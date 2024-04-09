@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: intelliflow-app
+  namespace: control-plane
+  labels:
+    app: intelliflow-app
+    domain: control-plane
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: intelliflow-app
+  template:
+    metadata:
+      labels:
+        app: intelliflow-app
+    spec:
+      containers:
+      - name: intelliflow-app
+        image: intelliflow/intelliflow-app:colo
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80

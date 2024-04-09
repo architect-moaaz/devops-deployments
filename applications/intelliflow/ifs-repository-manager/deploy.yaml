@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ifs-repository-manager
+  namespace: control-plane
+  labels:
+    app: ifs-repository-manager
+    domain: control-plane
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ifs-repository-manager
+  template:
+    metadata:
+      labels:
+        app: ifs-repository-manager
+    spec:
+      containers:
+      - name: ifs-repository-manager
+        image: quarkus/ifs-repomanager-svc-jvm:colo
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 31510
+        volumeMounts:
+        - mountPath: /if-repo
+          name: repo-data
+          # subPath: html
+      volumes:
+      - name: repo-data
+        persistentVolumeClaim:
+          claimName: ifs-repository-manager-pvc
+
+        # ENV example to mount configmap as env
+        # env:
+        # - name: KEY_NAME
+        #   valueFrom:
+        #     configMapKeyRef:   
+        #       name: ifs-repository-manager-cm  
+        #       key: key-from-cm
+
+        # Volume example to mount configmap as file
+  #       volumeMounts:
+  #       - name: ifs-repository-manager-cm
+  #         mountPath: /etc/config
+  # volumes:
+  #   - name: ifs-repository-manager-cm
+  #     configMap:
+  #       name: ifs-repository-manager-cm

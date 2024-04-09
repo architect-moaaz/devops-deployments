@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ifa-notification-mgr-svc
+  namespace: control-plane
+spec:
+  type: NodePort
+  # type: ClusterIP
+  selector:
+    app: ifa-notification-mgr
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 31601
+      nodePort: 31601

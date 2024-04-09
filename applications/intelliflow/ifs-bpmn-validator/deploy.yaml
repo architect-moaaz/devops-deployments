@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ifs-bpmn-validator
+  namespace: control-plane
+  labels:
+    app: ifs-bpmn-validator
+    domain: control-plane
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ifs-bpmn-validator
+  template:
+    metadata:
+      labels:
+        app: ifs-bpmn-validator
+    spec:
+      containers:
+      - name: ifs-bpmn-validator
+        image: inteliflow/ifs-bpmn-validator:colo
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 31502
+
+        # ENV example to mount configmap as env
+        # env:
+        # - name: KEY_NAME
+        #   valueFrom:
+        #     configMapKeyRef:   
+        #       name: ifs-bpmn-validator-cm  
+        #       key: key-from-cm
+
+        # Volume example to mount configmap as file
+  #       volumeMounts:
+  #       - name: ifs-bpmn-validator-cm
+  #         mountPath: /etc/config
+  # volumes:
+  #   - name: ifs-bpmn-validator-cm
+  #     configMap:
+  #       name: ifs-bpmn-validator-cm

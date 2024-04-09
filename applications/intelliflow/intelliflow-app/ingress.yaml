@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: intelliflow-app
+  namespace: control-plane
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - portal.intelliflow.ai
+    secretName: portal.intelliflow.ai
+  rules:
+    - host: portal.intelliflow.ai
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: intelliflow-app-svc
+                port:
+                  number: 80

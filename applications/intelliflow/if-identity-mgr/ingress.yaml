@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: if-identity-mgr
+  namespace: control-plane
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - id-colo.intelliflow.ai
+    secretName: id-colo.intelliflow.ai
+  rules:
+    - host: id-colo.intelliflow.ai
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: if-identity-mgr-svc
+                port:
+                  number: 80

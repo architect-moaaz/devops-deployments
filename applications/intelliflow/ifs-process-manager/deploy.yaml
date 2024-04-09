@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ifs-process-manager
+  namespace: control-plane
+  labels:
+    app: ifs-process-manager
+    domain: control-plane
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ifs-process-manager
+  template:
+    metadata:
+      labels:
+        app: ifs-process-manager
+    spec:
+      containers:
+      - name: ifs-process-manager
+        image: intelliflow/ifs-process-manager:colo
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 31701
+
+        # ENV example to mount configmap as env
+        env:
+        - name: COLO_MONGO_HOST
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-process-manager-cm  
+              key: COLO_MONGO_HOST
+        - name: COLO_MONGO_NAME
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-process-manager-cm  
+              key: COLO_MONGO_NAME
+        - name: COLO_MONGO_PORT
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-process-manager-cm  
+              key: COLO_MONGO_PORT
+        - name: COLO_MONGO_USERNAME
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-process-manager-cm  
+              key: COLO_MONGO_USERNAME
+        - name: COLO_MONGO_PASSWORD
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-process-manager-cm  
+              key: COLO_MONGO_PASSWORD
+        - name: COLO_KAFKA_URL
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-process-manager-cm  
+              key: COLO_KAFKA_URL
+        - name: COLO_KAFKA_PORT
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-process-manager-cm  
+              key: COLO_KAFKA_PORT
+        # Volume example to mount configmap as file
+  #       volumeMounts:
+  #       - name: ifs-process-manager-cm
+  #         mountPath: /etc/config
+  # volumes:
+  #   - name: ifs-process-manager-cm
+  #     configMap:
+  #       name: ifs-process-manager-cm

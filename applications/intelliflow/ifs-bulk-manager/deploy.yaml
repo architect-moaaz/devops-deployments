@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fs-bulk-manager
+  namespace: control-plane
+  labels:
+    app: fs-bulk-manager
+    domain: control-plane
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fs-bulk-manager
+  template:
+    metadata:
+      labels:
+        app: fs-bulk-manager
+    spec:
+      containers:
+      - name: fs-bulk-manager
+        image: IMAGE_NAME_TO_REPLACE:colo
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 31551
+
+        # ENV example to mount configmap as env
+        # env:
+        # - name: KEY_NAME
+        #   valueFrom:
+        #     configMapKeyRef:   
+        #       name: fs-bulk-manager-cm  
+        #       key: key-from-cm
+
+        # Volume example to mount configmap as file
+  #       volumeMounts:
+  #       - name: fs-bulk-manager-cm
+  #         mountPath: /etc/config
+  # volumes:
+  #   - name: fs-bulk-manager-cm
+  #     configMap:
+  #       name: fs-bulk-manager-cm

@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ifs-gateway-svc
+  namespace: control-plane
+  labels:
+    app: ifs-gateway-svc
+    domain: control-plane
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ifs-gateway-svc
+  template:
+    metadata:
+      labels:
+        app: ifs-gateway-svc
+    spec:
+      containers:
+      - name: ifs-gateway-svc
+        image: intelliflow/ifs-gateway-svc:colo
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 31703
+        env:
+        - name: MODELER_ADDRESS
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-gateway-svc-cm  
+              key: MODELER_ADDRESS
+        - name: GENESIS_ADDRESS
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-gateway-svc-cm  
+              key: GENESIS_ADDRESS
+        - name: REPORT_ADDRESS
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-gateway-svc-cm  
+              key: REPORT_ADDRESS
+        - name: CDS_ADDRESS
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-gateway-svc-cm  
+              key: CDS_ADDRESS
+        - name: DEPLOY_ADDRESS
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-gateway-svc-cm  
+              key: DEPLOY_ADDRESS
+        - name: ODATA_ADDRESS
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-gateway-svc-cm 
+              key: ODATA_ADDRESS
+        - name: ROUTER_ADDRESS
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-gateway-svc-cm 
+              key: ROUTER_ADDRESS
+        - name: IDENTITY_ADDRESS
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-gateway-svc-cm 
+              key: IDENTITY_ADDRESS
+        - name: NOTIFICATION_ADDRESS
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-gateway-svc-cm 
+              key: NOTIFICATION_ADDRESS
+        # - name: PROCESS_ADDRESS
+        #   valueFrom:
+        #     configMapKeyRef:   
+        #       name: ifs-gateway-svc-cm 
+        #       key: PROCESS_ADDRESS
+        # - name: UPLOAD_ADDRESS
+        #   valueFrom:
+        #     configMapKeyRef:   
+        #       name: ifs-gateway-svc-cm 
+        #       key: UPLOAD_ADDRESS
+
+
+
+        # ENV example to mount configmap as env
+        # env:
+        # - name: KEY_NAME
+        #   valueFrom:
+        #     configMapKeyRef:   
+        #       name: ifs-gateway-svc-cm  
+        #       key: key-from-cm
+
+        # Volume example to mount configmap as file
+  #       volumeMounts:
+  #       - name: ifs-gateway-svc-cm
+  #         mountPath: /etc/config
+  # volumes:
+  #   - name: ifs-gateway-svc-cm
+  #     configMap:
+  #       name: ifs-gateway-svc-cm

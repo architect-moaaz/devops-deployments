@@ -1,0 +1,16 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: data-cassandra
+  labels:
+    type: local
+    app: cassandra
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  # storageClassName: local-storage
+  hostPath:
+    path: "/home/ifserveradmn/if-studio/cassandra-data"

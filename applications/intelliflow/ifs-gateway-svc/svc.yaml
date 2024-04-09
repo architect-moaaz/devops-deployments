@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ifs-gateway-svc
+  namespace: control-plane
+spec:
+  type: NodePort
+  # type: ClusterIP
+  selector:
+    app: ifs-gateway-svc
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 31703
+      nodePort: 31703

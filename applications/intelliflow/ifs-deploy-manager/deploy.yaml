@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ifs-deploy-manager
+  namespace: control-plane
+  labels:
+    app: ifs-deploy-manager
+    domain: control-plane
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ifs-deploy-manager
+  template:
+    metadata:
+      labels:
+        app: ifs-deploy-manager
+    spec:
+      containers:
+      - name: ifs-deploy-manager
+        image: intelliflow/ifs-deployment-manager-jvm:colo
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 31511
+        # ENV example to mount configmap as env
+        # env:
+        # - name: KEY_NAME
+        #   valueFrom:
+        #     configMapKeyRef:   
+        #       name:ifs-deploy-manager-cm  
+        #       key: key-from-cm
+
+        # Volume example to mount configmap as file
+  #       volumeMounts:
+  #       - name:ifs-deploy-manager-cm
+  #         mountPath: /etc/config
+  # volumes:
+  #   - name:ifs-deploy-manager-cm
+  #     configMap:
+  #       name:ifs-deploy-manager-cm

@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: if-identity-mgr
+  namespace: control-plane
+  labels:
+    app: if-identity-mgr
+    domain: control-plane
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: if-identity-mgr
+  template:
+    metadata:
+      labels:
+        app: if-identity-mgr
+    spec:
+      containers:
+      - name: if-identity-mgr
+        image: intelliflow/if-identity-mgr:colo
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 31523
+        env:
+        - name: KEYCLOAK_URL
+          valueFrom:
+            configMapKeyRef:   
+              name: if-identity-mgr-cm  
+              key: KEYCLOAK_URL
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:   
+              name: if-identity-mgr-cm  
+              key: PORT
+        # ENV example to mount configmap as env
+        # env:
+        # - name: KEY_NAME
+        #   valueFrom:
+        #     configMapKeyRef:   
+        #       name: identity-mgr-cm  
+        #       key: key-from-cm
+
+        # Volume example to mount configmap as file
+  #       volumeMounts:
+  #       - name: identity-mgr-cm
+  #         mountPath: /etc/config
+  # volumes:
+  #   - name: identity-mgr-cm
+  #     configMap:
+  #       name: identity-mgr-cm

@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ifa-odata-svc
+  namespace: control-plane
+  labels:
+    app: ifa-odata-svc
+    domain: control-plane
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ifa-odata-svc
+  template:
+    metadata:
+      labels:
+        app: ifa-odata-svc
+    spec:
+      containers:
+      - name: ifa-odata-svc
+        image: intelliflow/ifa-odata-svc:colo
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 31513
+
+        # ENV example to mount configmap as env
+        env:
+        - name: COLO_MONGO_HOST
+          valueFrom:
+            configMapKeyRef:   
+              name: ifa-odata-svc-cm  
+              key: COLO_MONGO_HOST
+        - name: COLO_MONGO_NAME
+          valueFrom:
+            configMapKeyRef:   
+              name: ifa-odata-svc-cm  
+              key: COLO_MONGO_NAME
+        - name: COLO_MONGO_PORT
+          valueFrom:
+            configMapKeyRef:   
+              name: ifa-odata-svc-cm  
+              key: COLO_MONGO_PORT
+        - name: COLO_MONGO_USERNAME
+          valueFrom:
+            configMapKeyRef:   
+              name: ifa-odata-svc-cm  
+              key: COLO_MONGO_USERNAME
+        - name: COLO_MONGO_PASSWORD
+          valueFrom:
+            configMapKeyRef:   
+              name: ifa-odata-svc-cm  
+              key: COLO_MONGO_PASSWORD
+        - name: COLO_KAFKA_URL
+          valueFrom:
+            configMapKeyRef:   
+              name: ifa-odata-svc-cm  
+              key: COLO_KAFKA_URL
+        - name: COLO_KAFKA_PORT
+          valueFrom:
+            configMapKeyRef:   
+              name: ifa-odata-svc-cm  
+              key: COLO_KAFKA_PORT
+
+        # Volume example to mount configmap as file
+  #       volumeMounts:
+  #       - name: ifa-odata-svc-cm
+  #         mountPath: /etc/config
+  # volumes:
+  #   - name: ifa-odata-svc-cm
+  #     configMap:
+  #       name: ifa-odata-svc-cm

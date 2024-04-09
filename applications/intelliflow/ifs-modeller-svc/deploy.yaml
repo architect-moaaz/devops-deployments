@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ifs-modeller-svc
+  namespace: control-plane
+  labels:
+    app: ifs-modeller-svc
+    domain: control-plane
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ifs-modeller-svc
+  template:
+    metadata:
+      labels:
+        app: ifs-modeller-svc
+    spec:
+      containers:
+      - name: ifs-modeller-svc
+        image: intelliflow/ifs-modeller-svc-jvm:colo
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 31501
+
+        # ENV example to mount configmap as env
+        # env:
+        # - name: KEY_NAME
+        #   valueFrom:
+        #     configMapKeyRef:   
+        #       name: ifs-modeller-svc-cm  
+        #       key: key-from-cm
+
+        # Volume example to mount configmap as file
+  #       volumeMounts:
+  #       - name: ifs-modeller-svc-cm
+  #         mountPath: /etc/config
+  # volumes:
+  #   - name: ifs-modeller-svc-cm
+  #     configMap:
+  #       name: ifs-modeller-svc-cm

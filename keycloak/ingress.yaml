@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: keycloak
+  namespace: control-plane
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - kc-colo.intelliflow.ai
+    secretName: kc-colo.intelliflow.ai
+  rules:
+    - host: kc-colo.intelliflow.ai
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: keycloak
+                port:
+                  number: 80

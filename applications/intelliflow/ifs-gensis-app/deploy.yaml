@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ifs-gensis-app
+  namespace: control-plane
+  labels:
+    app: ifs-gensis-app
+    domain: control-plane
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ifs-gensis-app
+  template:
+    metadata:
+      labels:
+        app: ifs-gensis-app
+    spec:
+      containers:
+      - name: ifs-gensis-app
+        image: intelliflow/ifs-genesis-app-jvm:colo
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 31512
+
+        # ENV example to mount configmap as env
+        # env:
+        # - name: KEY_NAME
+        #   valueFrom:
+        #     configMapKeyRef:   
+        #       name: ifs-gensis-app-cm  
+        #       key: key-from-cm
+
+        # Volume example to mount configmap as file
+  #       volumeMounts:
+  #       - name: ifs-gensis-app-cm
+  #         mountPath: /etc/config
+  # volumes:
+  #   - name: ifs-gensis-app-cm
+  #     configMap:
+  #       name: ifs-gensis-app-cm

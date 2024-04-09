@@ -1,0 +1,74 @@
+pipeline {
+    agent {
+      	docker {
+        	image 'ishu0824/docker-build:latest'
+            args '--privileged'       
+            }
+    }    
+    environment {
+        // The KUBECONFIG environment variable will be assigned
+            KUBECONFIG = credentials('kubeconfig')
+            DOCKERHUB_CREDENTIALS = credentials('dockerhubcredentials')     
+
+        }
+    stages {
+
+        stage('Clone repo') {
+
+            steps {
+                    git branch: params.branchName,  credentialsId: 'gitCredentials', url: params.repoUrl
+                }
+                
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    if ( params.buildArgs == null || params.buildArgs == "" ){
+                        if ( params.Dockerfile_Path == null || params.Dockerfile_Path == "" ){
+                            sh "docker build -t ${params.imageName}:${params.env} ."
+                        }else{
+                            sh "docker build -f ${params.Dockerfile_Path} -t ${params.imageName}:${params.env} ."
+                        } 
+                    }else {
+                        if ( params.Dockerfile_Path == null || params.Dockerfile_Path == "" ){
+                            sh "docker build -t ${params.imageName}:${params.env}  ${params.buildArgs} ."
+                        }else{
+                            sh "docker build -f ${params.Dockerfile_Path} -t ${params.imageName}:${params.env} ${params.buildArgs} ."
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Pushing Image to Dockerhub') {      	
+            steps{                       	
+                sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"         		
+                echo "Login Completed"
+                // sh "docker build -t ${params.imageName}:${params.env}  ."
+                sh "docker push ${params.imageName}:${params.env} "
+            }           
+        }   
+
+        stage('Deploy') {
+            steps {
+                script {
+                    sh """
+                    kubectl --kubeconfig $KUBECONFIG rollout restart ${params.deploymentName} -n control-plane
+                    """
+                }   
+            }
+        }
+        
+        // stage('Deploy') {
+        //     steps {
+        //         git branch: 'develop',  credentialsId: 'gitCredentials', url: 'git@gitlab.intelliflow.in:intelliflow/devops-deployments.git' 
+        //         sh """
+        //         cd applications/${params.imageName}
+        //         kubectl --kubeconfig $KUBECONFIG apply -f . 
+        //         """
+        //     }
+        // }   
+    }
+
+}

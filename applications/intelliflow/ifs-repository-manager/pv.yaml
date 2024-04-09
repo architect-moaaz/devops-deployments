@@ -1,0 +1,33 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: ifs-repository-manager-pv
+  labels:
+    app: ifs-repository-manager
+spec:
+  capacity:
+    storage: 15Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: local-storage
+  hostPath:
+    path: "/home/ifserveradmn/if-studio/if-repo"
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: control-plane
+  name: ifs-repository-manager-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 15Gi
+  storageClassName: local-storage
+  selector:
+    matchLabels:
+      app: ifs-repository-manager

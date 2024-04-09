@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ifs-repository-manager-svc
+  namespace: control-plane
+spec:
+  type: NodePort
+  # type: ClusterIP
+  selector:
+    app: ifs-repository-manager
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 31510
+      nodePort: 31510

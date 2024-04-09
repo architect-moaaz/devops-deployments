@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ifs-gateway-svc
+  namespace: control-plane
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - api.intelliflow.ai
+    secretName: api.intelliflow.ai
+  rules:
+    - host: api.intelliflow.ai
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: ifs-gateway-svc
+                port:
+                  number: 80

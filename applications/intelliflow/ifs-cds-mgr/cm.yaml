@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ifs-cds-mgr-cm
+  namespace: control-plane
+data:
+  COLO_MONGO_HOST: "mongodb.control-plane.svc.cluster.local"
+  # COLO_MONGO_HOST: "103.171.99.74"
+  COLO_MONGO_NAME: "cds"
+  COLO_MONGO_PORT: "27017"
+  COLO_MONGO_USERNAME: "coloadmin"
+  COLO_MONGO_PASSWORD: "hau2Opeef7Hoos8eeNgo"
+  # COLO_KAFKA_URL: "kafka.control-plane.svc.cluster.local"
+  # COLO_KAFKA_PORT: "9092"
+  COLO_PORT: "31524"
+  # example of a simple property defined using --from-literal
+  # example.property.1: hello
+  # example.property.2: world
+  # example of a complex property defined using --from-file
+  # example.property.file: |-
+  #   property.1=value-1
+  #   property.2=value-2
+  #   property.3=value-3 

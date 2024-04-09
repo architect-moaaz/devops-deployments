@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ifs-modeller-svc
+  namespace: control-plane
+spec:
+  type: NodePort
+  # type: ClusterIP
+  selector:
+    app: ifs-modeller-svc
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 31501
+      nodePort: 31501

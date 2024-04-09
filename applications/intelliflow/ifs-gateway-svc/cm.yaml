@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ifs-gateway-svc-cm 
+  namespace: control-plane
+data:
+  MODELER_ADDRESS: ifs-modeller-svc.control-plane.svc.cluster.local
+  GENESIS_ADDRESS: ifs-gensis-app-svc.control-plane.svc.cluster.local
+  REPORT_ADDRESS: ifs-reportbuilder-svc.control-plane.svc.cluster.local
+  CDS_ADDRESS: ifs-cds-mgr-svc.control-plane.svc.cluster.local
+  DEPLOY_ADDRESS: ifs-deploy-manager-svc.control-plane.svc.cluster.local
+  ODATA_ADDRESS: ifa-odata-svc-svc.control-plane.svc.cluster.local
+  ROUTER_ADDRESS: ifs-router-svc-svc.control-plane.svc.cluster.local
+  IDENTITY_ADDRESS: if-identity-mgr-svc.control-plane.svc.cluster.local
+  NOTIFICATION_ADDRESS: ifa-notification-mgr-svc.control-plane.svc.cluster.local
+  PROCESS_ADDRESS: ifs-process-mgr-svc.control-plane.svc.cluster.local
+  KEY_CLOAK_HOST_COLO: kc-colo.intelliflow.ai
+  intelliflow: master
+  tsao: TSAO 
+  # PROCESS_ADDRESS: 
+  # UPLOAD_ADDRESS: 
+  # example of a simple property defined using --from-literal
+  # example.property.1: hello
+  # example.property.2: world
+  # example of a complex property defined using --from-file
+  # example.property.file: |-
+  #   property.1=value-1
+  #   property.2=value-2
+  #   property.3=value-3 

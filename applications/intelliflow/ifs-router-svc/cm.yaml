@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ifs-router-svc-cm
+  namespace: control-plane
+data:
+  COLO_KAFKA_URL: "kafka.control-plane.svc.cluster.local"
+  COLO_KAFKA_PORT: "9092"
+  COLO_CASSANDRA_HOST: "cassandra.control-plane.svc.cluster.local"
+  COLO_CASSANDRA_PORT: "9042"
+  COLO_CASSANDRA_DATACENTER: "datacenter1"
+  COLO_CASSANDRA_KEYSPACE: "k1"
+  COLO_CASSANDRA_USERNAME: "cassandra"
+  COLO_CASSANDRA_PASSWORD: "Wei8air0Wei8air"
+  COLO_MODELLER_FORM: "http://ifs-modeller-svc.control-plane.svc.cluster.local/modellerService/form/content"
+  COLO_MODELLER_KUBE_CLUSTER_IP: "http://103.171.99.74"
+  COLO_NOTIFICATION_MGR: "http://ifa-notification-mgr-svc.control-plane.svc.cluster.local/app"
+  COLO_PORT: "31600"
+  # example of a simple property defined using --from-literal
+  # example.property.1: hello
+  # example.property.2: world
+  # example of a complex property defined using --from-file
+  # example.property.file: |-
+  #   property.1=value-1
+  #   property.2=value-2
+  #   property.3=value-3 

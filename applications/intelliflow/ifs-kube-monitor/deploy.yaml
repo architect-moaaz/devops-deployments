@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ifs-kube-monitor
+  namespace: control-plane
+  labels:
+    app: ifs-kube-monitor
+    domain: control-plane
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ifs-kube-monitor
+  template:
+    metadata:
+      labels:
+        app: ifs-kube-monitor
+    spec:
+      containers:
+      - name: ifs-kube-monitor
+        image: intelliflow/ifs-kube-monitor-svc:colo
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 31602
+
+        # ENV example to mount configmap as env
+        # env:
+        # - name: KEY_NAME
+        #   valueFrom:
+        #     configMapKeyRef:   
+        #       name: ifs-kube-monitor-cm  
+        #       key: key-from-cm
+
+        # Volume example to mount configmap as file
+  #       volumeMounts:
+  #       - name: ifs-kube-monitor-cm
+  #         mountPath: /etc/config
+  # volumes:
+  #   - name: ifs-kube-monitor-cm
+  #     configMap:
+  #       name: ifs-kube-monitor-cm

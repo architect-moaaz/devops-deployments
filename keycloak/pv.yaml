@@ -1,0 +1,16 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: data-keycloak-postgres
+  labels:
+    type: local
+    app: keycloak-postgres
+spec:
+  capacity:
+    storage: 8Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: local-storage
+  hostPath:
+    path: "/home/ifserveradmn/if-studio/keycloak-postgres-data"

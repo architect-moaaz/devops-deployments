@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ifa-data-mgr
+  namespace: control-plane
+  labels:
+    app: ifa-data-mgr
+    domain: control-plane
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ifa-data-mgr
+  template:
+    metadata:
+      labels:
+        app: ifa-data-mgr
+    spec:
+      containers:
+      - name: ifa-data-mgr
+        image: intelliflow/ifa-data-mgr:colo
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 33010
+        env:
+        - name: COLO_MONGO_HOST
+          valueFrom:
+            configMapKeyRef:   
+              name: ifa-data-mgr-cm
+              key: COLO_MONGO_HOST
+        - name: COLO_MONGO_NAME
+          valueFrom:
+            configMapKeyRef:   
+              name: ifa-data-mgr-cm
+              key: COLO_MONGO_NAME
+        - name: COLO_MONGO_PORT
+          valueFrom:
+            configMapKeyRef:   
+              name: ifa-data-mgr-cm
+              key: COLO_MONGO_PORT
+        - name: COLO_MONGO_USERNAME
+          valueFrom:
+            configMapKeyRef:   
+              name: ifa-data-mgr-cm
+              key: COLO_MONGO_USERNAME
+        - name: COLO_MONGO_PASSWORD
+          valueFrom:
+            configMapKeyRef:   
+              name: ifa-data-mgr-cm
+              key: COLO_MONGO_PASSWORD
+        - name: COLO_KAFKA_URL
+          valueFrom:
+            configMapKeyRef:   
+              name: ifa-data-mgr-cm
+              key: COLO_KAFKA_URL
+        - name: COLO_KAFKA_PORT
+          valueFrom:
+            configMapKeyRef:   
+              name: ifa-data-mgr-cm
+              key: COLO_KAFKA_PORT
+
+        # ENV example to mount configmap as env
+        # env:
+        # - name: KEY_NAME
+        #   valueFrom:
+        #     configMapKeyRef:   
+        #       name: ifa-data-mgr-cm  
+        #       key: key-from-cm
+
+        # Volume example to mount configmap as file
+  #       volumeMounts:
+  #       - name: ifa-data-mgr-cm
+  #         mountPath: /etc/config
+  # volumes:
+  #   - name: ifa-data-mgr-cm
+  #     configMap:
+  #       name: ifa-data-mgr-cm

@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ifs-router-svc
+  namespace: control-plane
+  labels:
+    app: ifs-router-svc
+    domain: control-plane
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ifs-router-svc
+  template:
+    metadata:
+      labels:
+        app: ifs-router-svc
+    spec:
+      containers:
+      - name: ifs-router-svc
+        image: intelliflow/ifs-router-svc:colo
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 31600
+        env:
+        - name: COLO_PORT
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-router-svc-cm
+              key: COLO_PORT
+        - name: COLO_MODELLER_FORM
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-router-svc-cm
+              key: COLO_MODELLER_FORM
+        - name: COLO_MODELLER_KUBE_CLUSTER_IP
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-router-svc-cm
+              key: COLO_MODELLER_KUBE_CLUSTER_IP
+        - name: COLO_NOTIFICATION_MGR
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-router-svc-cm
+              key: COLO_NOTIFICATION_MGR
+        - name: COLO_CASSANDRA_HOST
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-router-svc-cm
+              key: COLO_CASSANDRA_HOST
+        - name: COLO_CASSANDRA_PORT
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-router-svc-cm
+              key: COLO_CASSANDRA_PORT
+        - name: COLO_CASSANDRA_DATACENTER
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-router-svc-cm
+              key: COLO_CASSANDRA_DATACENTER
+        - name: COLO_CASSANDRA_KEYSPACE
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-router-svc-cm
+              key: COLO_CASSANDRA_KEYSPACE
+        - name: COLO_CASSANDRA_USERNAME
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-router-svc-cm
+              key: COLO_CASSANDRA_USERNAME
+        - name: COLO_CASSANDRA_PASSWORD
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-router-svc-cm
+              key: COLO_CASSANDRA_PASSWORD
+        - name: COLO_KAFKA_URL
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-router-svc-cm
+              key: COLO_KAFKA_URL
+        - name: COLO_KAFKA_PORT
+          valueFrom:
+            configMapKeyRef:   
+              name: ifs-router-svc-cm
+              key: COLO_KAFKA_PORT
+
+        
+        # ENV example to mount configmap as env
+        # env:
+        # - name: KEY_NAME
+        #   valueFrom:
+        #     configMapKeyRef:   
+        #       name: ifs-router-svc-cm  
+        #       key: key-from-cm
+
+        # Volume example to mount configmap as file
+  #       volumeMounts:
+  #       - name: ifs-router-svc-cm
+  #         mountPath: /etc/config
+  # volumes:
+  #   - name: ifs-router-svc-cm
+  #     configMap:
+  #       name: ifs-router-svc-cm
